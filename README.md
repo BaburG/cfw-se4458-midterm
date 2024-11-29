@@ -101,7 +101,6 @@ This project is a rental service API for managing **listings**, **bookings**, an
 ### Features
 
 - **JWT Authentication**: Users are authenticated via JSON Web Tokens.
-- **Role-Based Access Control**: Hosts, guests, and admins have distinct capabilities.
 - **Pagination**: Routes like `/guest/query-listings` and `/admin/listing-by-rating` support pagination.
 
 For more details, refer to the Swagger documentation or the linked YouTube presentation.
