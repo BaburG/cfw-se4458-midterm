@@ -1,0 +1,22 @@
+{
+  "name": "cfw-se4458-midterm",
+  "scripts": {
+    "dev": "wrangler dev",
+    "db:generate": "drizzle-kit generate",
+    "db:up": "drizzle-kit up",
+    "deploy": "wrangler deploy --minify"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@libsql/client": "^0.14.0",
+    "drizzle-orm": "^0.36.4",
+    "hono": "^4.6.12",
+    "swagger-ui-dist": "^5.18.2",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241112.0",
+    "drizzle-kit": "^0.28.1",
+    "wrangler": "^3.88.0"
+  }
+}

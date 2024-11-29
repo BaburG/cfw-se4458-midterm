@@ -1,0 +1,33 @@
+name = "cfw-se4458-midterm"
+main = "src/index.ts"
+compatibility_date = "2024-11-28"
+
+compatibility_flags = [ "nodejs_compat" ]
+
+# [vars]
+# MY_VAR = "my-variable"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cfw-se4458-midterm-d1"
+database_id = "43dbf456-e74e-4d9c-bafd-48315b4b4e52"
+
+# [[kv_namespaces]]
+# binding = "MY_KV_NAMESPACE"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "my-bucket"
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "my-database"
+# database_id = ""
+
+# [ai]
+# binding = "AI"
+
+# [observability]
+# enabled = true
+# head_sampling_rate = 1

@@ -1,0 +1,376 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Hono App API",
+      "description": "API for managing listings, bookings, and ratings for a rental service.",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8787/v1",
+        "description": "Local server"
+      },
+      {
+        "url": "https://cfw-se4458-midterm.babur-g.workers.dev/v1",
+        "description": "Production server"
+      }
+    ],
+    "paths": {
+      "/all": {
+        "get": {
+          "summary": "Get all listings",
+          "tags": ["Listings"],
+          "responses": {
+            "200": {
+              "description": "List of all listings",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Listing" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/auth": {
+        "post": {
+          "summary": "Authenticate user",
+          "tags": ["Authentication"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": { "type": "string" },
+                    "password": { "type": "string" }
+                  },
+                  "required": ["username", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Authentication successful",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": { "type": "string" },
+                      "token": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid credentials",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/host/insert-listing": {
+        "post": {
+          "summary": "Add a new listing",
+          "tags": ["Host"],
+          "security": [{ "bearerAuth": [] }],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "num_people": { "type": "integer" },
+                    "country": { "type": "string" },
+                    "city": { "type": "string" },
+                    "price": { "type": "integer" }
+                  },
+                  "required": ["num_people", "country", "city", "price"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Listing added successfully",
+              "content": {
+                "application/json": {
+                  "schema": { "$ref": "#/components/schemas/Listing" }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/guest/query-listings": {
+        "get": {
+          "summary": "Search for available listings",
+          "tags": ["Guest"],
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            { "name": "date_from", "in": "query", "required": true, "schema": { "type": "string", "format": "date" } },
+            { "name": "date_to", "in": "query", "required": true, "schema": { "type": "string", "format": "date" } },
+            { "name": "num_guest", "in": "query", "required": true, "schema": { "type": "integer" } },
+            { "name": "country", "in": "query", "required": true, "schema": { "type": "string" } },
+            { "name": "city", "in": "query", "required": true, "schema": { "type": "string" } },
+            { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+            { "name": "pageSize", "in": "query", "schema": { "type": "integer", "default": 10 } }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of available listings",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Listing" }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/guest/book": {
+        "post": {
+          "summary": "Book a listing",
+          "tags": ["Guest"],
+          "security": [{ "bearerAuth": [] }],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date_from": { "type": "string", "format": "date" },
+                    "date_to": { "type": "string", "format": "date" },
+                    "names": { "type": "string" },
+                    "listing_id": { "type": "integer" }
+                  },
+                  "required": ["date_from", "date_to", "names", "listing_id"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Booking created successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": { "type": "string" },
+                      "booking": { "$ref": "#/components/schemas/Booking" }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request or conflict",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/guest/rate": {
+        "post": {
+          "summary": "Rate a booking",
+          "tags": ["Guest"],
+          "security": [{ "bearerAuth": [] }],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "booking_id": { "type": "integer" },
+                    "rating": { "type": "integer", "minimum": 1, "maximum": 5 },
+                    "comment": { "type": "string" }
+                  },
+                  "required": ["booking_id", "rating", "comment"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Rating submitted successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": { "type": "string" },
+                      "rating": { "$ref": "#/components/schemas/Rating" },
+                      "comment": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Booking not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/listing-by-rating": {
+        "get": {
+          "summary": "Get listings by average rating",
+          "tags": ["Admin"],
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            { "name": "country", "in": "query", "required": true, "schema": { "type": "string" } },
+            { "name": "city", "in": "query", "required": true, "schema": { "type": "string" } },
+            { "name": "threshold", "in": "query", "required": true, "schema": { "type": "number", "minimum": 0, "maximum": 5 } },
+            { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+            { "name": "pageSize", "in": "query", "schema": { "type": "integer", "default": 10 } }
+          ],
+          "responses": {
+            "200": {
+              "description": "Listings fetched successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": { "type": "string" },
+                      "listings": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Listing" }
+                      },
+                      "pagination": {
+                        "type": "object",
+                        "properties": {
+                          "page": { "type": "integer" },
+                          "pageSize": { "type": "integer" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request parameters",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Listing": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "num_people": { "type": "integer" },
+            "country": { "type": "string" },
+            "city": { "type": "string" },
+            "price": { "type": "integer" }
+          }
+        },
+        "Booking": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "listingId": { "type": "integer" },
+            "startDate": { "type": "string", "format": "date" },
+            "endDate": { "type": "string", "format": "date" }
+          }
+        },
+        "Rating": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "listingId": { "type": "integer" },
+            "rating": { "type": "integer", "minimum": 1, "maximum": 5 }
+          }
+        }
+      },
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }
+  
