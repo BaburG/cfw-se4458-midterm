@@ -79,11 +79,22 @@ This project is a rental service API for managing **listings**, **bookings**, an
 
 ---
 
+### Users
+
+| **Username** | **Password** |
+|---------------|----------------|
+| `admin`  |  `password123`  |
+| `host`  |  `password123`  |
+| `guest`  |  `password123`  |
+
+
+---
+
 ### Documentation
 
 - **Swagger Docs**: [https://cfw-se4458-midterm.babur-g.workers.dev/docs](https://cfw-se4458-midterm.babur-g.workers.dev/docs)
 - **YouTube Presentation & Explanation**: [YouTube Link](https://youtu.be/uVVGYsbop3c)
-- **ER Diagram**: [ER Diagram Link](#)
+- **ER Diagram**: [ER Diagram Link](https://raw.githubusercontent.com/BaburG/cfw-se4458-midterm/refs/heads/main/ERD.jpeg)
 
 ---
 
