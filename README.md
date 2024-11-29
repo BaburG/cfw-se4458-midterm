@@ -82,8 +82,8 @@ This project is a rental service API for managing **listings**, **bookings**, an
 ### Documentation
 
 - **Swagger Docs**: [https://cfw-se4458-midterm.babur-g.workers.dev/docs](https://cfw-se4458-midterm.babur-g.workers.dev/docs)
-- **YouTube Presentation & Explanation**: [YouTube Link](#) *(replace `#` with your link)*
-- **ER Diagram**: [ER Diagram Link](#) *(replace `#` with your link)*
+- **YouTube Presentation & Explanation**: [YouTube Link](https://youtu.be/uVVGYsbop3c)
+- **ER Diagram**: [ER Diagram Link](#)
 
 ---
 

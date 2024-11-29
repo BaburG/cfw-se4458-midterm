@@ -80,7 +80,7 @@ v1.post('/host/insert-listing', authMiddleware, async (c) => {
 }
 });
 
-v1.get('/guest/query-listings', authMiddleware, async (c) => {
+v1.get('/guest/query-listings', async (c) => {
   try{
     console.log(await c.req.query());
     const { date_from, date_to, num_guest, country, city} = await c.req.query();
